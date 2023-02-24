@@ -1,0 +1,23 @@
+package com.contactapp.security;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import com.contactapp.model.UserInfo;
+import com.contactapp.repository.UserRepository;
+
+public class UserInfoDetailsServices implements UserDetailsService {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<UserInfo> userinfo = userRepository.findByName(username);
+		return userinfo.map(UserInfoDetails::new).orElseThrow();
+	}
+}
